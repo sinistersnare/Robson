@@ -31,7 +31,7 @@ Here is a link to my slides (which are possibly more updated if the link is not 
 https://docs.google.com/presentation/d/1JjU2X-EBaaXrfmHUqCavvxs3IIunZzOb9u1hJTFe8zo/edit?usp=sharing
 
 I have the original paper (algorithm written in ALGOL 68-R!!), but I probably cant share it over the internet.
-Ask me if you want a peak!
+Ask me if you want a peek!
 
 I am hoping to write a blog post on this, so motivate me to do that please!
 
