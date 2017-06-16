@@ -7,7 +7,7 @@ so please feel free to hate my ugly, poorly commented/written code, but feel eve
 
 ## Running ##
 
-Please use (ANSI) C89, dont ask why please.
+Please use (ANSI) C89. Do not ask why please. Also note that only preorder traversal is supported.
 
 	$ gcc -Wall -std=c89 robson.c robstack.c bintree.c -o traversal
 	$ ./traversal
@@ -20,7 +20,6 @@ A Robson traversal is a binary tree traversal in `O(n)` time, and ***`O(1)`*** (
 The basic depth-first search traversal algorithm is `O(n)` space, and the threaded and link-inversion methods both are also `O(n)` space complexity.
 
 The robson traversal takes the best of the link-inversion and threaded methods to create an `O(1)` space algorithm.
-
 
 ## Helpful links ##
 
@@ -36,11 +35,9 @@ Ask me if you want a peak!
 
 I am hoping to write a blog post on this, so motivate me to do that please!
 
-
 ## License ##
 
 This code is licensed with the MIT License! Please check LICENSE.txt for more info!
-
 
 ## Special Thanks ##
 
