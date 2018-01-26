@@ -7,11 +7,12 @@ so please feel free to hate my ugly, poorly commented/written code, but feel eve
 
 ## Running ##
 
-Please use (ANSI) C89. Do not ask why please. Also note that only preorder traversal is supported.
+Please note that only preorder traversal is currently supported.
 
-	$ gcc -Wall -std=c89 robson.c robstack.c bintree.c -o traversal
+	$ gcc -Wall robson.c robstack.c bintree.c -o traversal
 	$ ./traversal
 
+All of these files should correctly compile with c89 support.
 
 ## Why do I need a robson traversal? ##
 
