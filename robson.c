@@ -1,5 +1,7 @@
 #include <stdio.h>
+#include <stdlib.h>
 
+#include "bintree.h"
 #include "robstack.h"
 
 
@@ -101,16 +103,28 @@ void process(node* n) {
     printf("%d\n", n->data);
 }
 
-int main(void) {
-    tree* t;
-    tree_make(&t);
-    tree_insert(t, 10);
-    tree_insert(t, 5);
-    tree_insert(t, 15);
-    tree_insert(t, 3);
-    tree_insert(t, 7);
-    tree_insert(t, 4);
-    tree_insert(t, 6);
+int main(int argc, const char** argv) {
+
+    tree* t = tree_new();
+    /*tree_make(&t);*/
+
+    if (argc > 1) {
+        int i;
+        for (i=1; i < argc; i++) {
+            const char* arg = argv[i];
+            int val = atoi(arg);
+            printf("inserted %d\n", val);
+            tree_insert(t, val);
+        }
+    } else {
+        // 1 2 5 4 7 1 3 8 10 1 11
+        tree_insert(t, 1);
+        tree_insert(t, 3);
+        tree_insert(t, 2);
+        tree_insert(t, 4);
+        tree_insert(t, 5);
+    }
+    tree_print(t);
     robson_traversal(t->root, process);
 
     return 0;

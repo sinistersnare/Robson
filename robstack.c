@@ -1,6 +1,8 @@
 /* Implementations of the leaf_stack and inner_stack as found in rob_stack.h */
 
 #include <stdlib.h>
+
+#include "bintree.h"
 #include "robstack.h"
 
 

@@ -1,7 +1,7 @@
-/* Implementations of the node and tree as found in rob_stack.h */
+/* Implementations of the node and tree as found in bintree.h */
 #include <stdlib.h>
 #include <stdio.h>
-#include "robstack.h"
+#include "bintree.h"
 
 /**********    Node Code    **********/
 /*************************************/
@@ -24,7 +24,7 @@ node* node_insert(node* cur, int elem) {
     } else if (cur->data < elem) {
         cur->right = node_insert(cur->right, elem);
     }
-    return cur;
+    return cur; // Tree = Set, swallow duplicates.
 }
 
 void node_free(node* cur) {
@@ -36,11 +36,11 @@ void node_free(node* cur) {
     free(cur);
 }
 
-void print_node(node* n) {
+void node_print(node* n) {
     if (n == NULL) return;
-    print_node(n->left);
+    node_print(n->left);
     printf(" %d ", n->data);
-    print_node(n->right);
+    node_print(n->right);
 }
 
 
@@ -53,6 +53,11 @@ void tree_make(tree** t) {
     (*t)->root = NULL;
 }
 
+tree* tree_new() {
+    tree* t = malloc(sizeof(tree));
+    t->root = NULL;
+    return t;
+}
 
 void tree_insert(tree* t, int elem) {
     t->root = node_insert(t->root, elem);
@@ -72,6 +77,6 @@ void tree_print(tree* t) {
         return;
     }
     printf("[ ");
-    print_node(t->root);
+    node_print(t->root);
     printf(" ]\n");
 }
