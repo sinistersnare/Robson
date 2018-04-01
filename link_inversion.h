@@ -1,5 +1,5 @@
 #ifndef LINK_INVERSION_H
-#define LINK_INVERSION_H "you did it :)"
+#define LINK_INVERSION_H "You're awesome!"
 
 #ifndef __cplusplus
 /* Quick and dirty bool support */
@@ -29,7 +29,7 @@ Tree* tree_insert(Tree* cur, int data) {
         new_node->data = data;
         new_node->left = NULL;
         new_node->right = NULL;
-        new_node->went_right = 0;
+        new_node->went_right = false;
         return new_node;
     }
     if (cur->data > data) {
@@ -40,7 +40,6 @@ Tree* tree_insert(Tree* cur, int data) {
     return cur; // Tree = Set, swallow duplicates.
 }
 
-void tree_print_aux(Tree* cur, int indentation);
 void tree_print_aux(Tree* cur, int indentation) {
 	if (cur == NULL) {
 		printf("%*c- NULL\n", (indentation * 2), ' ');
