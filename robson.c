@@ -66,8 +66,6 @@ void robson_traversal(node* root, void (*process)(node *)) {
     inner_stack* ins;
     leaf_stack* lfs;
     node* cur;
-    node* left;
-    node* right;
 
     is_make(&ins, root);
     ls_make(&lfs);
@@ -83,18 +81,14 @@ void robson_traversal(node* root, void (*process)(node *)) {
     // therefore keep going up. */
     while (cur) {
         process(cur);
-        left = cur->left;
-        if (left) {
+        if (cur->left) {
             is_push(ins, cur);
-            cur = left;
+            cur = cur->left;
+        } else if (cur->right) {
+            is_push(ins, cur);
+            cur = cur->right;
         } else {
-            right = cur->right;
-            if (right) {
-                is_push(ins, cur);
-                cur = right;
-            } else {
-                cur = next_subtree(cur, ins, lfs);
-            }
+            cur = next_subtree(cur, ins, lfs);
         }
     }
 }
@@ -117,7 +111,7 @@ int main(int argc, const char** argv) {
             tree_insert(t, val);
         }
     } else {
-        // 1 2 5 4 7 1 3 8 10 1 11
+        /* 1 2 5 4 7 1 3 8 10 1 11*/
         tree_insert(t, 1);
         tree_insert(t, 3);
         tree_insert(t, 2);

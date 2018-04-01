@@ -26,9 +26,10 @@ typedef void (*VisitFunc)(Tree*);
 Tree* tree_insert(Tree* root, int data) {
 	Tree* cur = root;
 	Tree* parent = NULL;
+	Tree* new_node;
 	while (cur != NULL) {
 		if (data == cur->data) {
-			// duplicate, so just dont do anything.
+			/* duplicate, so just dont do anything.*/
 			return root;
 		}
 		parent = cur;
@@ -41,7 +42,7 @@ Tree* tree_insert(Tree* root, int data) {
 			else break;
 		}
 	}
-	Tree* new_node = malloc(sizeof(Tree));
+	new_node = (Tree*) malloc(sizeof(Tree));
 	new_node->data = data;
 	new_node->left_thread = true;
 	new_node->right_thread = true;
@@ -68,11 +69,13 @@ Tree* tree_insert(Tree* root, int data) {
 
 
 Tree* tree_successor(Tree* node) {
-	// fast path!
+	Tree* cur;
+
+	/* fast path!*/
 	if (node->right_thread) return node->right;
 
-	// else return leftmost child of right subtree!
-	Tree* cur = node->right;
+	/* else return leftmost child of right subtree!*/
+	cur = node->right;
 	while (!cur->left_thread) {
 		cur = cur->left;
 	}

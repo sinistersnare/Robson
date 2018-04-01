@@ -1,11 +1,16 @@
-all:
-	@echo "nothing here..."
+CC=gcc
+CFLAGS=-Wall -g -std=c89 -pedantic
+
+all: inversion robson thread
+
+clean:
+	@rm inv.x rob.x thread.x
 
 inversion:
-	gcc -g link_inversion.c -o inv.x
+	$(CC) $(CFLAGS) link_inversion.c -o inv.x
 
 robson:
-	gcc -g robstack.c robson.c bintree.c -o rob.x
+	$(CC) $(CFLAGS) robstack.c robson.c bintree.c -o rob.x
 
 thread:
-	gcc -g threaded.c -o thread.x
+	$(CC) $(CFLAGS) threaded.c -o thread.x
