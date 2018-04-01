@@ -9,9 +9,9 @@
 #endif
 
 typedef struct Tree {
-	Tree* left;
-	Tree* right;
-	int data;
+    Tree* left;
+    Tree* right;
+    int data;
 } Tree;
 
 typedef void (*VisitFunc)(Tree*);
@@ -33,15 +33,15 @@ Tree* tree_insert(Tree* cur, int data) {
 }
 
 void tree_print_aux(Tree* cur, int indentation) {
-	if (cur == NULL) {
-		printf("%*c- NULL\n", (indentation * 2), ' ');
-		return;
-	}
-	printf("%*c- %d\n", (indentation * 2), ' ', cur->data);
-	tree_print_aux(cur->left, indentation + 1);
-	tree_print_aux(cur->right, indentation + 1);
+    if (cur == NULL) {
+        printf("%*c- NULL\n", (indentation * 2), ' ');
+        return;
+    }
+    printf("%*c- %d\n", (indentation * 2), ' ', cur->data);
+    tree_print_aux(cur->left, indentation + 1);
+    tree_print_aux(cur->right, indentation + 1);
 }
 void tree_print(Tree* cur) {
-	tree_print_aux(cur, 0);
+    tree_print_aux(cur, 0);
 }
 #endif
