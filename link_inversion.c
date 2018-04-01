@@ -74,7 +74,7 @@ int main(int argc, const char** argv) {
     int i;
 
     if (argc < 2) {
-        printf("Link Inversion takes any amount of int arguments to add to tree in given order.");
+        printf("Link Inversion takes more than 0 int arguments to add to tree in given order.");
         return 1;
     }
 
