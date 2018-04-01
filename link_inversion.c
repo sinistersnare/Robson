@@ -3,7 +3,7 @@
 
     To run, simply call gcc on it:
 
-    `$ gcc link_inversion.c -o inv.x`
+    `$ make inversion`
     `$ ./inv.x 1 3 2 4 5
 */
 
@@ -31,37 +31,41 @@ void no_visit(Tree* node) {}
 
 
 void link_inversion(Tree* cur, VisitFunc pre_order, VisitFunc in_order, VisitFunc post_order) {
+    Tree* prev = NULL;
+    Tree* old_prev;
+    Tree* old_prev_left;
+    Tree* old_cur;
+
     if (cur == NULL) return;
 
-    Tree* prev = NULL;
     for (;;) {
-        // Descend leftward as much as possible.
+        /* Descend leftward as much as possible.*/
         while (cur != NULL) {
             pre_order(cur);
             cur->went_right = false;
-            Tree* old_cur = cur;
+            old_cur = cur;
             cur = old_cur->left;
             old_cur->left = prev;
             prev = old_cur;
         }
 
-        // ascend from right as much as we can.
+        /* ascend from right as much as we can.*/
         while (prev != NULL && prev->went_right == true) {
-            Tree* old_prev = prev;
+            old_prev = prev;
             prev = prev->right;
             old_prev->right = cur;
             cur = old_prev;
             post_order(cur);
         }
 
-        // If cur is null after coming back up from the right,
-        // it means that we have finished traversal
+        /* If cur is null after coming back up from the right,
+        // it means that we have finished traversal*/
         if (prev == NULL) return;
 
-        // Switch from the left side of prev to the right
-        // Also, mark prev as went_right so we know to traverse upwards using right pointer.
+        /* Switch from the left side of prev to the right
+        // Also, mark prev as went_right so we know to traverse upwards using right pointer.*/
         in_order(prev);
-        Tree* old_prev_left = prev->left;
+        old_prev_left = prev->left;
         prev->went_right = true;
         prev->left = cur;
         cur = prev->right;
@@ -84,8 +88,9 @@ int main(int argc, const char** argv) {
         t = tree_insert(t, atoi(argv[i]));
     }
 
-    // tree_print(t);
+    /* tree_print(t);*/
     link_inversion(t, no_visit, in_visit, no_visit);
+    return 0;
 }
 
 

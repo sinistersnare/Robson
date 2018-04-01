@@ -7,16 +7,23 @@ so please feel free to hate my ugly, poorly commented/written code, but feel eve
 
 ## Running ##
 
+Robson and Link Inversion functions take 3 visitor functions for pre/in/post order traversals.
+
+Threaded traversals only supports in-order processing.
+
 Please note that only preorder traversal is currently supported.
 
-	$ gcc -Wall robson.c robstack.c bintree.c -o traversal
-	$ ./traversal
+    $ make robson
+    $ ./rob.x 1 2 5 4 7 1 3 8 10 1 11
+    $ make threaded
+    $ ./thread.x 1 2 5 4 7 1 3 8 10 1 11
+    $ make inversion
+    $ ./inv.x 1 2 5 4 7 1 3 8 10 1 11
 
 All of these files should correctly compile with c89 support.
 
 ## TODO: ##
 
-* Use bintree.c for all traversal functions.
 * Blog post on Traversals. Then replace the next section with a link to that.
 
 ## Why do I need a robson traversal? ##
@@ -36,7 +43,7 @@ Here is a link to my slides (which are possibly more updated if the link is not 
 
 https://docs.google.com/presentation/d/1JjU2X-EBaaXrfmHUqCavvxs3IIunZzOb9u1hJTFe8zo/edit?usp=sharing
 
-I have the original paper (algorithm written in ALGOL 68-R!!), but I probably cant share it over the internet.
+I have the original paper (algorithm written in ALGOL 68-R!!), but I probably cant share it publicly.
 Ask me if you want a peek!
 
 I am hoping to write a blog post on this, so motivate me to do that please!
@@ -47,4 +54,4 @@ This code is licensed with the MIT License! Please check LICENSE.txt for more in
 
 ## Special Thanks ##
 
-Thank you Jason Filippou for telling me about this super cool algorithm. UMD students take his classes!
+Thank you Jason Filippou for telling me about this cool algorithm. UMCP students take his classes!

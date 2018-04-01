@@ -24,7 +24,7 @@ node* node_insert(node* cur, int elem) {
     } else if (cur->data < elem) {
         cur->right = node_insert(cur->right, elem);
     }
-    return cur; // Tree = Set, swallow duplicates.
+    return cur; /* Tree = Set, swallow duplicates.*/
 }
 
 void node_free(node* cur) {

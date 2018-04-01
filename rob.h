@@ -1,5 +1,5 @@
-#ifndef LINK_INVERSION_H
-#define LINK_INVERSION_H "You're awesome!"
+#ifndef ROB_H
+#define ROB_H "Wooh cool algorithms!!"
 
 #ifndef __cplusplus
 /* Quick and dirty bool support */
@@ -8,20 +8,13 @@
 #define false 0
 #endif
 
-
-
 typedef struct Tree {
-    int data;
-    struct Tree* left;
-    struct Tree* right;
-    bool went_right;
+	Tree* left;
+	Tree* right;
+	int data;
 } Tree;
 
 typedef void (*VisitFunc)(Tree*);
-
-void link_inversion(Tree*, VisitFunc, VisitFunc, VisitFunc);
-
-/** Tree Related functions **/
 
 Tree* tree_insert(Tree* cur, int data) {
     if (cur == NULL) {
@@ -29,7 +22,6 @@ Tree* tree_insert(Tree* cur, int data) {
         new_node->data = data;
         new_node->left = NULL;
         new_node->right = NULL;
-        new_node->went_right = false;
         return new_node;
     }
     if (cur->data > data) {
@@ -37,7 +29,7 @@ Tree* tree_insert(Tree* cur, int data) {
     } else if (cur->data < data) {
         cur->right = tree_insert(cur->right, data);
     }
-    return cur; /* Tree = Set, swallow duplicates.*/
+    return cur; // Tree = Set, swallow duplicates.
 }
 
 void tree_print_aux(Tree* cur, int indentation) {
@@ -52,6 +44,4 @@ void tree_print_aux(Tree* cur, int indentation) {
 void tree_print(Tree* cur) {
 	tree_print_aux(cur, 0);
 }
-
-
 #endif
