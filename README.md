@@ -14,6 +14,11 @@ Please note that only preorder traversal is currently supported.
 
 All of these files should correctly compile with c89 support.
 
+## TODO: ##
+
+* Use bintree.c for all traversal functions.
+* Blog post on Traversals. Then replace the next section with a link to that.
+
 ## Why do I need a robson traversal? ##
 
 A Robson traversal is a binary tree traversal in `O(n)` time, and ***`O(1)`*** (!!!!) space.
