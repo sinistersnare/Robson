@@ -10,95 +10,62 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
-#ifndef __cplusplus
-/* Quick and dirty bool support */
-#define bool int
-#define true 1
-#define false 0
-#endif
-
-typedef struct Tree {
-    int data;
-    struct Tree* left;
-    struct Tree* right;
-    bool follow_right;
-} Tree;
+#include "link_inversion.h"
 
 
-void traverse(Tree*);
 
-Tree* tree_insert(Tree* cur, int data) {
-    if (cur == NULL) {
-        Tree* new_node = malloc(sizeof(Tree));
-        new_node->data = data;
-        new_node->left = NULL;
-        new_node->right = NULL;
-        new_node->follow_right = 0;
-        return new_node;
-    }
-    if (cur->data > data) {
-        cur->left = tree_insert(cur->left, data);
-    } else if (cur->data < data) {
-        cur->right = tree_insert(cur->right, data);
-    }
-    return cur; // Tree = Set, swallow duplicates.
+void pre_visit(Tree* node) {
+    printf("pre:%d\n", node->data);
 }
 
-void visit(Tree* node) {
-    printf("%d\n", node->data);
+void in_visit(Tree* node) {
+    printf("in:%d\n", node->data);
+
 }
 
+void post_visit(Tree* node) {
+    printf("post:%d\n", node->data);
+}
 
-// TODO: implement ascendFromRight and ascendFromLeft
-// seems it doesnt work when a tree just goes rightwards?
-void traverse(Tree* cur) {
+void no_visit(Tree* node) {}
+
+
+void link_inversion(Tree* cur, VisitFunc pre_order, VisitFunc in_order, VisitFunc post_order) {
     if (cur == NULL) return;
 
     Tree* prev = NULL;
-
-    while (!((cur->follow_right == 1) && (prev == NULL))) {
-
-        // descend left as much as possible.
+    for (;;) {
+        // Descend leftward as much as possible.
         while (cur != NULL) {
-            visit(cur); // preorder
-            cur->follow_right = 0;
-            // descend to the left
-            Tree* temp = prev;
-            prev = prev->left;
-            temp->left = cur;
-            cur = temp;
-        }
-
-        while (prev != NULL && prev->follow_right == 1) {
-            // ascend from the right.
+            pre_order(cur);
+            cur->went_right = false;
             Tree* old_cur = cur;
-            Tree* old_prev = prev;
-            cur = prev;
-            prev = prev->right;
-            old_prev->right = old_cur;
-            // visit(cur) // postorder
+            cur = old_cur->left;
+            old_cur->left = prev;
+            prev = old_cur;
         }
 
-        if (prev == NULL) {
-            return;
-        } else {
-            // ascend from the left
-            Tree* old_cur = cur;
+        // ascend from right as much as we can.
+        while (prev != NULL && prev->went_right == true) {
             Tree* old_prev = prev;
-            cur = prev;
-            prev = prev->left;
-            old_prev->left = old_cur;
-
-            // visit(cur) // inorder
-            cur->follow_right = 1;
-
-            // descend to the right
-            Tree* temp = prev;
             prev = prev->right;
-            temp->right = cur;
-            cur = temp;
+            old_prev->right = cur;
+            cur = old_prev;
+            post_order(cur);
         }
+
+        // If cur is null after coming back up from the right,
+        // it means that we have finished traversal
+        if (prev == NULL) return;
+
+        // Switch from the left side of prev to the right
+        // Also, mark prev as went_right so we know to traverse upwards using right pointer.
+        in_order(prev);
+        Tree* old_prev_left = prev->left;
+        prev->went_right = true;
+        prev->left = cur;
+        cur = prev->right;
+        prev->right = old_prev_left;
     }
 }
 
@@ -117,7 +84,8 @@ int main(int argc, const char** argv) {
         t = tree_insert(t, atoi(argv[i]));
     }
 
-    traverse(t);
+    // tree_print(t);
+    link_inversion(t, no_visit, in_visit, no_visit);
 }
 
 
