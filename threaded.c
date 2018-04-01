@@ -5,27 +5,27 @@
 #include "threaded.h"
 
 void visit(Tree* node) {
-	printf("%d\n", node->data);
+    printf("%d\n", node->data);
 }
 
 /**
-	Runs an in-order traversal on the tree.
+    Runs an in-order traversal on the tree.
 */
 void threaded_traversal(Tree* root, VisitFunc visitor) {
-	Tree* cur;
-	if (root == NULL) return;
+    Tree* cur;
+    if (root == NULL) return;
 
-	cur = root;
-	/* Go all the way down to the smallest number in the tree.*/
-	while (!cur->left_thread) {
-		cur = cur->left;
-	}
+    cur = root;
+    /* Go all the way down to the smallest number in the tree.*/
+    while (!cur->left_thread) {
+        cur = cur->left;
+    }
 
-	/* Now all we have to do is go rightwards until the end!*/
-	while (cur != NULL) {
-		visitor(cur);
-		cur = tree_successor(cur);
-	}
+    /* Now all we have to do is go rightwards until the end!*/
+    while (cur != NULL) {
+        visitor(cur);
+        cur = tree_successor(cur);
+    }
 }
 
 int main(int argc, const char** argv) {
