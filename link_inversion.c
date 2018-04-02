@@ -4,7 +4,7 @@
     To run, simply call gcc on it:
 
     `$ make inversion`
-    `$ ./inv.x 1 3 2 4 5
+    `$ ./link_inversion.x 1 3 2 4 5
 */
 
 #include <stdio.h>
@@ -86,7 +86,7 @@ int main(int argc, const char** argv) {
     }
 
     /* tree_print(t);*/
-    link_inversion(t, no_visit, in_visit, no_visit);
+    link_inversion(t, pre_visit, in_visit, post_visit);
     return 0;
 }
 
