@@ -96,9 +96,9 @@ void ls_push(leaf_stack* ls, node* p) {
 }
 
 /* peeks the top of the leaf stack.
-// if the top of `ls` is seen, then
-// we can start stop popping up the tree.
-// */
+    if the top of `ls` is seen, then
+    we can start stop popping up the tree.
+*/
 node* ls_top(leaf_stack* ls) {
     if (ls->top) {
         return ls->top->right;
@@ -117,14 +117,12 @@ void ls_pop(leaf_stack* ls) {
     held->right = NULL;
 }
 
-/* the leaf_stack is empty once we have nothing left to traverse.
-// */
+/* the leaf_stack is empty once we have nothing left to traverse.*/
 bool ls_empty(leaf_stack* ls) {
     return ls->top == NULL;
 }
 /* set_avail is a holding variable
-// and will soon enough be put on top of `ls` by a push call.
-// */
+    and will soon enough be put on top of `ls` by a push call.*/
 void ls_set_avail(leaf_stack* ls, node* p) {
     ls->avail = p;
 }

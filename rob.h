@@ -9,8 +9,8 @@
 #endif
 
 typedef struct Tree {
-    Tree* left;
-    Tree* right;
+    struct Tree* left;
+    struct Tree* right;
     int data;
 } Tree;
 
@@ -29,7 +29,7 @@ Tree* tree_insert(Tree* cur, int data) {
     } else if (cur->data < data) {
         cur->right = tree_insert(cur->right, data);
     }
-    return cur; // Tree = Set, swallow duplicates.
+    return cur; /* Tree = Set, swallow duplicates. */
 }
 
 void tree_print_aux(Tree* cur, int indentation) {
@@ -44,4 +44,5 @@ void tree_print_aux(Tree* cur, int indentation) {
 void tree_print(Tree* cur) {
     tree_print_aux(cur, 0);
 }
+
 #endif

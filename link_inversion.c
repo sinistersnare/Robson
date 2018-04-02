@@ -12,15 +12,12 @@
 
 #include "link_inversion.h"
 
-
-
 void pre_visit(Tree* node) {
     printf("pre:%d\n", node->data);
 }
 
 void in_visit(Tree* node) {
     printf("in:%d\n", node->data);
-
 }
 
 void post_visit(Tree* node) {
