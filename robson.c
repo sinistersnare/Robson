@@ -11,13 +11,9 @@
 // We know when we have reached an appropriate subtree when
 // the leaf_stack's top is the current node. We then return
 // the current node, so it traverse its tree. */
-node* next_subtree(node* m, inner_stack* inner, leaf_stack* leaf) {
-    node* p;
-    bool found;
-    ls_set_avail(leaf, m);
-    p = m;
-    found = false;
-    while (!found && !is_empty(inner)) {
+node* next_subtree(node* p, inner_stack* inner, leaf_stack* leaf) {
+    ls_set_avail(leaf, p);
+    while (!is_empty(inner)) {
         if (ls_top(leaf) == is_top(inner)) {
             /* We have just popped up from a right-subtree
             // and can keep poppin' right on up! */
@@ -26,9 +22,7 @@ node* next_subtree(node* m, inner_stack* inner, leaf_stack* leaf) {
             is_pop(inner);
         } else {
             if (((is_top(inner))->left) == NULL) {
-                /* popped up from right, but its not special,
-                // as there just was never a left child to traverse.
-                // keep poppin' */
+                /* popped up from right, so keep going up.*/
                 p = is_top(inner);
                 is_pop(inner);
             } else {
@@ -45,8 +39,7 @@ node* next_subtree(node* m, inner_stack* inner, leaf_stack* leaf) {
                     //    3 7           3 7
                     // */
                     ls_push(leaf, is_top(inner));
-                    p = is_exchange(inner, p);
-                    found = true;
+                    return is_exchange(inner, p);
                 } else {
                     /* popped up from left, keep on going til you hit something good. */
                     p = is_top(inner);
@@ -55,11 +48,7 @@ node* next_subtree(node* m, inner_stack* inner, leaf_stack* leaf) {
             }
         }
     }
-    if (is_empty(inner)) {
-        return NULL;
-    } else {
-        return p;
-    }
+    return NULL;
 }
 
 void robson_traversal(node* root, void (*process)(node *)) {
@@ -88,7 +77,7 @@ void robson_traversal(node* root, void (*process)(node *)) {
             is_push(ins, cur);
             cur = cur->right;
         } else {
-            cur = next_subtree(cur, ins, lfs);
+            cur = next_subtree(root, ins, lfs);
         }
     }
 }
