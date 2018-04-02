@@ -13,12 +13,14 @@ Threaded traversals only supports in-order processing.
 
 Please note that only preorder traversal is currently supported.
 
+    $ make all # instead of using all the other make commands
     $ make robson
-    $ ./rob.x 1 2 5 4 7 1 3 8 10 1 11
+    $ ./robson.x 1 2 5 4 7 3 8 10 0 11
     $ make threaded
-    $ ./thread.x 1 2 5 4 7 1 3 8 10 1 11
+    $ ./threaded.x 1 2 5 4 7 3 8 10 0 11
     $ make inversion
-    $ ./inv.x 1 2 5 4 7 1 3 8 10 1 11
+    $ ./link_inversion.x 1 2 5 4 7 3 8 10 0 11
+    $ make clean # when you are done.
 
 All of these files should correctly compile with c89 support.
 
