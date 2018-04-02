@@ -16,7 +16,7 @@ typedef struct Tree {
 
 typedef void (*VisitFunc)(Tree*);
 
-void robson_traversal(Tree*, VisitFunc, VisitFunc, VisitFunc);
+void robson_traversal(Tree*, VisitFunc);
 
 Tree* tree_insert(Tree* cur, int data) {
     if (cur == NULL) {

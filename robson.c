@@ -122,7 +122,6 @@ void robson_traversal(Tree* cur, VisitFunc pre_visit) {
     }
 }
 
-
 void no_visit(Tree* _) {}
 void pre_visit(Tree* n) {
     printf("pre:%d\n", n->data);
@@ -135,15 +134,13 @@ void post_visit(Tree* n) {
 }
 
 int main(int argc, const char** argv) {
-    Tree* t;
+    Tree* t = NULL;
     int i;
 
     if (argc < 2) {
         printf("Robson Traversal takes more than 0 int arguments to add to tree in given order.");
         return 1;
     }
-
-    t = NULL;
 
     for (i=1; i < argc; i++) {
         t = tree_insert(t, atoi(argv[i]));
