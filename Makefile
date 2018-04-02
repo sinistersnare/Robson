@@ -1,16 +1,16 @@
 CC=gcc
-CFLAGS=-Wall -g -std=c89 -pedantic
+CFLAGS=-std=c89 -pedantic -Wall -O3
 
 all: inversion robson thread
 
 clean:
-	@rm inv.x rob.x thread.x
+	rm -f link_inversion.x robson.x threaded.x
 
 inversion:
-	$(CC) $(CFLAGS) link_inversion.c -o inv.x
+	$(CC) $(CFLAGS) link_inversion.c -o link_inversion.x
 
 robson:
-	$(CC) $(CFLAGS) rob.c -o rob.x
+	$(CC) $(CFLAGS) rob.c -o robson.x
 
 thread:
-	$(CC) $(CFLAGS) threaded.c -o thread.x
+	$(CC) $(CFLAGS) threaded.c -o threaded.x
