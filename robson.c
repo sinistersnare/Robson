@@ -22,17 +22,17 @@
 // or when parent->left == NULL. Once we find the top->right condition,
 // We set top = top->left for the next time we are going up.
 */
-void robson_traversal(Tree* root, VisitFunc pre_visit, VisitFunc in_visit, VisitFunc post_visit) {
+void robson_traversal(Tree* cur, VisitFunc pre_visit, VisitFunc in_visit, VisitFunc post_visit) {
     /* Currently only pre_visit is supported, in_visit and post_visit coming soon <3*/
     Tree* top = NULL;
     Tree* available = NULL;
-     /* Using a sentinel pointer value here because if the roots parent was NULL,
-     on the way up the tree when the root is the parent, the parent->left == NULL,
+     /* Using a sentinel pointer value here instead of NULL
+     because if the roots parent was NULL, on the way up the tree
+     when the root is the parent, the parent->left == NULL,
      and the algorithm would think that we are in a right branch.*/
     Tree* parent = ROOT_PARENT_SENTINEL;
-    Tree* cur = root; /* TODO: if root is never used, just make root cur for 8 less bytes :p */
 
-    while (cur != ROOT_PARENT_SENTINEL) {
+    for (;;) {
         pre_visit(cur);
 
         /* Push down the tree until we find a leaf and use the information
@@ -115,6 +115,8 @@ void robson_traversal(Tree* root, VisitFunc pre_visit, VisitFunc in_visit, Visit
                     break; /* Get out of this loop so we can go down again.*/
                 }
             }
+            /* If we make it here and we have not exchanged, then we are at the root
+                after traversing the right tree, so we are done!*/
             if (!exchanged) return;
         }
     }
