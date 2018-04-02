@@ -16,6 +16,8 @@ typedef struct Tree {
 
 typedef void (*VisitFunc)(Tree*);
 
+void robson_traversal(Tree*, VisitFunc, VisitFunc, VisitFunc);
+
 Tree* tree_insert(Tree* cur, int data) {
     if (cur == NULL) {
         Tree* new_node = (Tree*) malloc(sizeof(Tree));
@@ -32,17 +34,17 @@ Tree* tree_insert(Tree* cur, int data) {
     return cur; /* Tree = Set, swallow duplicates. */
 }
 
-void tree_print_aux(Tree* cur, int indentation) {
+void _tree_print_aux(Tree* cur, int indentation) {
     if (cur == NULL) {
         printf("%*c- NULL\n", (indentation * 2), ' ');
         return;
     }
     printf("%*c- %d\n", (indentation * 2), ' ', cur->data);
-    tree_print_aux(cur->left, indentation + 1);
-    tree_print_aux(cur->right, indentation + 1);
+    _tree_print_aux(cur->left, indentation + 1);
+    _tree_print_aux(cur->right, indentation + 1);
 }
 void tree_print(Tree* cur) {
-    tree_print_aux(cur, 0);
+    _tree_print_aux(cur, 0);
 }
 
 #endif
