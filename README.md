@@ -4,10 +4,9 @@ Hey y'all, this is a pretty cool tree traversal algorithm I've got here.
 I wrote this for my data-structures class mostly late at night,
 so please feel free to hate my ugly, poorly commented/written code, but feel even ***freer*** to contribute!
 
-
 ## Running ##
 
-The Robson traversal takes 3 visit functions but currently only supports the first, pre-order.
+The Robson traversal only supports pre-order. In- and Post- order are possible, but not implemented.
 
 The Link inversion traversal takes 3 visit functions and supports all 3, pre-, in-, and post-order.
 
@@ -26,7 +25,7 @@ All of these files should correctly compile using a c89 compiler.
 
 ## TODO: ##
 
-* In- and post- order for robson traversal.
+* In- and post- order for robson traversal?
 * Blog post on Traversals. Then replace the next section with a link to that.
 
 ## Why do I need the Robson traversal? ##

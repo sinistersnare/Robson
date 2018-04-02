@@ -22,7 +22,7 @@
 // or when parent->left == NULL. Once we find the top->right condition,
 // We set top = top->left for the next time we are going up.
 */
-void robson_traversal(Tree* cur, VisitFunc pre_visit, VisitFunc in_visit, VisitFunc post_visit) {
+void robson_traversal(Tree* cur, VisitFunc pre_visit) {
     /* Currently only pre_visit is supported, in_visit and post_visit coming soon <3*/
     Tree* top = NULL;
     Tree* available = NULL;
@@ -151,8 +151,6 @@ int main(int argc, const char** argv) {
 
     /*tree_print(t);*/
     /* 1 2 5 4 7 1 3 8 10 1 11 */
-    robson_traversal(t, pre_visit, no_visit, no_visit);
+    robson_traversal(t, pre_visit);
     return 0;
 }
-
-
