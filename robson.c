@@ -3,9 +3,11 @@
 
 #include "robson.h"
 
+/* the memory address 1 will never be valid, so it makes a good sentinel.*/
 #define ROOT_PARENT_SENTINEL ((Tree*) 1)
 
-void no_visit(Tree* _) {}
+/* Insightful comments are sporadically placed in anticipation of upcoming blog-post, sorry! */
+
 /*
 // When going up, going up from right means we can keep going up,
 // The algorithm never goes from right to left, only left to right.
@@ -20,9 +22,8 @@ void no_visit(Tree* _) {}
 // or when parent->left == NULL. Once we find the top->right condition,
 // We set top = top->left for the next time we are going up.
 */
-
-/* Currently only pre_visit is supported, in_visit and post_visit coming soon <3*/
 void robson_traversal(Tree* root, VisitFunc pre_visit, VisitFunc in_visit, VisitFunc post_visit) {
+    /* Currently only pre_visit is supported, in_visit and post_visit coming soon <3*/
     Tree* top = NULL;
     Tree* available = NULL;
      /* Using a sentinel pointer value here because if the roots parent was NULL,
@@ -120,6 +121,7 @@ void robson_traversal(Tree* root, VisitFunc pre_visit, VisitFunc in_visit, Visit
 }
 
 
+void no_visit(Tree* _) {}
 void pre_visit(Tree* n) {
     printf("pre:%d\n", n->data);
 }
