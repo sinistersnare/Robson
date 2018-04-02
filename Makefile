@@ -12,5 +12,5 @@ inversion:
 robson:
 	$(CC) $(CFLAGS) rob.c -o robson.x
 
-thread:
+threaded:
 	$(CC) $(CFLAGS) threaded.c -o threaded.x
