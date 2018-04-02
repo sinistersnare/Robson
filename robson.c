@@ -1,114 +1,154 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "bintree.h"
-#include "robstack.h"
+#include "robson.h"
 
+#define ROOT_PARENT_SENTINEL ((Tree*) 1)
 
-/* At this point in execution, we have reached a leaf, and we must
-// pop back up the inner_stack of inverted links so that we can
-// find find a new subtree to traverse.
-// We know when we have reached an appropriate subtree when
-// the leaf_stack's top is the current node. We then return
-// the current node, so it traverse its tree. */
-node* next_subtree(node* p, inner_stack* inner, leaf_stack* leaf) {
-    ls_set_avail(leaf, p);
-    while (!is_empty(inner)) {
-        if (ls_top(leaf) == is_top(inner)) {
-            /* We have just popped up from a right-subtree
-            // and can keep poppin' right on up! */
-            ls_pop(leaf);
-            p = is_top(inner);
-            is_pop(inner);
+void no_visit(Tree* _) {}
+/*
+// When going up, going up from right means we can keep going up,
+// The algorithm never goes from right to left, only left to right.
+// So when we go up from left, we need to check if there is a right
+// subtree, as then we need to traverse the right.
+// And when we do find that right-subtree, we mark the root of it
+// (the top of the little triangle from left-top-right created)
+// using the `top` leaf-node's right pointer
+// (its left is pointing to the next in the leaf-node stack)
+
+// We know we are coming up from the right when the parent == top->right
+// or when parent->left == NULL. Once we find the top->right condition,
+// We set top = top->left for the next time we are going up.
+*/
+
+/* Currently only pre_visit is supported, in_visit and post_visit coming soon <3*/
+void robson_traversal(Tree* root, VisitFunc pre_visit, VisitFunc in_visit, VisitFunc post_visit) {
+    Tree* top = NULL;
+    Tree* available = NULL;
+     /* Using a sentinel pointer value here because if the roots parent was NULL,
+     on the way up the tree when the root is the parent, the parent->left == NULL,
+     and the algorithm would think that we are in a right branch.*/
+    Tree* parent = ROOT_PARENT_SENTINEL;
+    Tree* cur = root; /* TODO: if root is never used, just make root cur for 8 less bytes :p */
+
+    while (cur != ROOT_PARENT_SENTINEL) {
+        pre_visit(cur);
+
+        /* Push down the tree until we find a leaf and use the information
+            we gained on the way down to find the next subtree to traverse
+            after the leaf. Pushing down the tree means adding inverted pointers
+            to the inner_stack so we can get back up the tree.
+
+            When we reach the leaf, we add it to the leaf_stack
+            */
+        if (cur->left != NULL) {
+            Tree* old_left = cur->left;
+            cur->left = parent;
+            parent = cur;
+            cur = old_left;
+        } else if (cur->right != NULL) {
+            Tree* old_right = cur->right;
+            cur->right = parent;
+            parent = cur;
+            cur = old_right;
         } else {
-            if (((is_top(inner))->left) == NULL) {
-                /* popped up from right, so keep going up.*/
-                p = is_top(inner);
-                is_pop(inner);
-            } else {
-                if ((is_top(inner))->right) {
-                    /* Its popping up the tree, and it has found a
-                    // right subtree to traverse!!!
-                    // exchange sets the current pointer to the right
-                    // subtree. In the example we are going up the 3 subtree.
-                    // the ls_push call marks that fact that we
-                    // are going down the right subtree of top(inner).
-                    //
-                    //    p=3           p=7
-                    //     5      ->     5
-                    //    3 7           3 7
-                    // */
-                    ls_push(leaf, is_top(inner));
-                    return is_exchange(inner, p);
+            bool exchanged = false;
+            available = cur;
+            while (parent != ROOT_PARENT_SENTINEL) {
+                if (top != NULL && parent == top->right) {
+                    /* If the parent node is an exchange point (when we switched from left to right subtree)
+                        then we are *ascending from the right subtree*. What we must do is keep going up
+                        as we have not yet found another subtree to traverse.
+                        To do that, we pop off of the leaf-stack (top/avail)
+                        Remember that top->right is an exchange point,
+                        and top->left is the next leaf in the stack. */
+                    /* In this case, the parents left pointer points to its parent,
+                        and its right pointer points to its left child.*/
+                    Tree* new_parent = parent->left;
+                    parent->left = parent->right;
+                    parent->right = cur;
+                    cur = parent;
+                    parent = new_parent;
+                    /* pop the leaf stack, the top's left pointer is the next leaf in the stack,
+                        and there will always be one, but I dont feel like formally proving it.
+                        Exercise to the reader <3*/
+                    top = top->left;
+                } else if (parent->left == NULL) {
+                    /* We are still ascending from the right here, but only because there was no left
+                        child to traverse, so the leaf-stack is to be left unaltered.*/
+                    /* In this case, parent->left == NULL and parent->right is parent's parent.*/
+                    Tree* new_parent = parent->right;
+                    parent->right = cur;
+                    cur = parent;
+                    parent = new_parent;
+                } else if (parent->right == NULL) {
+                    /* We are ascending from the left here, but there is no right tree to exchange with.
+                        so just keep going on up.*/
+                    /* Here, parent->left is parent's parent, and parent->right == NULL */
+                    Tree* new_parent = parent->left;
+                    parent->left = cur;
+                    cur = parent;
+                    parent = new_parent;
                 } else {
-                    /* popped up from left, keep on going til you hit something good. */
-                    p = is_top(inner);
-                    is_pop(inner);
+                    Tree* new_cur;
+                    /* After saving the most interesting case for last, here we are!
+                        We are ascending from the left, and there is a right tree
+                        that we have not traversed!*/
+                    if (available == NULL) {
+                        printf("Error, available should never be NULL here!");
+                        return;
+                    }
+                    /* Available becomes the new top of the leaf stack,
+                        and parent is the exchange point.*/
+                    new_cur = parent->right;
+                    available->left = top;
+                    available->right = parent;
+                    top = available;
+                    available = NULL; /* For cleanliness purposes.*/
+                    /* A right link going leftwards, which seems confusing,
+                        but its so we know which way we are going on the way back up*/
+                    parent->right = cur;
+                    cur = new_cur;
+                    /* parent need not change!*/
+                    exchanged = true;
+                    break; /* Get out of this loop so we can go down again.*/
                 }
             }
-        }
-    }
-    return NULL;
-}
-
-void robson_traversal(node* root, void (*process)(node *)) {
-    inner_stack* ins;
-    leaf_stack* lfs;
-    node* cur;
-
-    is_make(&ins, root);
-    ls_make(&lfs);
-    cur = root;
-    /* this loop simply pushes down the tree repeatedly.
-    // If it doesnt have a left child to push, but has a right
-    // it will push to the right, and link it that way.
-    // Once a leaf is found, we must start popping, to find a new subtree
-    // to find a new subtree, when we are propagating up,
-    // if we find that the next node to visit has a right child,
-    // we traverse it, UNLESS our leaf_stack has that element at its top.
-    // if that is the case, then we just came from that spot, and we should
-    // therefore keep going up. */
-    while (cur) {
-        process(cur);
-        if (cur->left) {
-            is_push(ins, cur);
-            cur = cur->left;
-        } else if (cur->right) {
-            is_push(ins, cur);
-            cur = cur->right;
-        } else {
-            cur = next_subtree(root, ins, lfs);
+            if (!exchanged) return;
         }
     }
 }
 
-void process(node* n) {
-    printf("%d\n", n->data);
+
+void pre_visit(Tree* n) {
+    printf("pre:%d\n", n->data);
+}
+void in_visit(Tree* n) {
+    printf("in:%d\n", n->data);
+}
+void post_visit(Tree* n) {
+    printf("post:%d\n", n->data);
 }
 
 int main(int argc, const char** argv) {
+    Tree* t;
+    int i;
 
-    tree* t = tree_new();
-    /*tree_make(&t);*/
-
-    if (argc > 1) {
-        int i;
-        for (i=1; i < argc; i++) {
-            const char* arg = argv[i];
-            int val = atoi(arg);
-            printf("inserted %d\n", val);
-            tree_insert(t, val);
-        }
-    } else {
-        /* 1 2 5 4 7 1 3 8 10 1 11*/
-        tree_insert(t, 1);
-        tree_insert(t, 3);
-        tree_insert(t, 2);
-        tree_insert(t, 4);
-        tree_insert(t, 5);
+    if (argc < 2) {
+        printf("Robson Traversal takes more than 0 int arguments to add to tree in given order.");
+        return 1;
     }
-    tree_print(t);
-    robson_traversal(t->root, process);
 
+    t = NULL;
+
+    for (i=1; i < argc; i++) {
+        t = tree_insert(t, atoi(argv[i]));
+    }
+
+    /*tree_print(t);*/
+    /* 1 2 5 4 7 1 3 8 10 1 11 */
+    robson_traversal(t, pre_visit, no_visit, no_visit);
     return 0;
 }
+
+
