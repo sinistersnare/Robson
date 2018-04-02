@@ -38,21 +38,18 @@ The robson traversal takes the best of the link-inversion and threaded methods t
 
 ## Helpful links ##
 
-There is very little help on the internet for this algorithm, but I have uploaded
-(a possibly old version of) my slides on the topic. It is available as RobsonTraversal.pdf on this repository.
+There is very little information on the internet for this algorithm, so I hope that the core
+algorithm in `robson.c` is annotated enough to give an idea of its core process.
 
-Here is a link to my slides (which are possibly more updated if the link is not dead):
+I am currently writing a blog post about Robson and the other traversals in this repository,
+so please stay tuned on https://drs.is for that!
 
-https://docs.google.com/presentation/d/1JjU2X-EBaaXrfmHUqCavvxs3IIunZzOb9u1hJTFe8zo/edit?usp=sharing
-
-I have the original paper (algorithm written in ALGOL 68-R!!), but I probably cant share it publicly.
-Ask me if you want a peek!
-
-I am hoping to write a blog post on this, so motivate me to do that please!
+I have the original paper by JM Robson (algorithm written in ALGOL 68-R!!),
+but I probably cant share it publicly. Ask me if you want a copy!
 
 ## License ##
 
-This code is licensed with the MIT License! Please check LICENSE.txt for more info!
+This code is licensed with the MIT License! Please check LICENSE.md for more info!
 
 ## Special Thanks ##
 

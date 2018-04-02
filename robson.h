@@ -1,5 +1,5 @@
-#ifndef ROB_H
-#define ROB_H "Wooh cool algorithms!!"
+#ifndef ROBSON_H
+#define ROBSON_H "Wooh cool algorithms!!"
 
 #ifndef __cplusplus
 /* Quick and dirty bool support */
