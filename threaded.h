@@ -18,6 +18,8 @@ typedef struct Tree {
 
 typedef void (*VisitFunc)(Tree*);
 
+void threaded_traversal(Tree*, VisitFunc);
+
 /** Shamelessly lifted from:
     https://www.geeksforgeeks.org/threaded-binary-tree-insertion/
     because I didnt feel like hand-porting my Java OOPy version...

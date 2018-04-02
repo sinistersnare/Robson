@@ -1,12 +1,3 @@
-/*
-    A standalone C program to demonstrate the link_inversion method for traversing binary trees.
-
-    To run, simply call gcc on it:
-
-    `$ make inversion`
-    `$ ./link_inversion.x 1 3 2 4 5
-*/
-
 #include <stdio.h>
 #include <stdlib.h>
 
