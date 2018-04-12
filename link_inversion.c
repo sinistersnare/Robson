@@ -78,6 +78,7 @@ int main(int argc, const char** argv) {
 
     /* tree_print(t);*/
     link_inversion(t, pre_visit, in_visit, post_visit);
+    free_tree(t);
     return 0;
 }
 

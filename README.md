@@ -25,7 +25,7 @@ All of these files should correctly compile using a c89 compiler.
 
 ## TODO: ##
 
-* In- and post- order for robson traversal?
+* In- and post-order for robson traversal?
 * Blog post on Traversals. Then replace the next section with a link to that.
 
 ## Why do I need the Robson traversal? ##

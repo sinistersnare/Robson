@@ -16,7 +16,7 @@ typedef struct Tree {
 
 typedef void (*VisitFunc)(Tree*);
 
-void robson_traversal(Tree*, VisitFunc);
+void robson_traversal(Tree*, VisitFunc, VisitFunc, VisitFunc);
 
 Tree* tree_insert(Tree* cur, int data) {
     if (cur == NULL) {
@@ -45,6 +45,16 @@ void _tree_print_aux(Tree* cur, int indentation) {
 }
 void tree_print(Tree* cur) {
     _tree_print_aux(cur, 0);
+}
+
+
+/* Post-order where traverse is free!!
+    There may be some irony in me just using a standard DFS here... */
+void free_tree(Tree* cur) {
+    if (cur == NULL) return;
+    free_tree(cur->left);
+    free_tree(cur->right);
+    free(cur); /* Boom */
 }
 
 #endif

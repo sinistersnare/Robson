@@ -53,5 +53,12 @@ void tree_print(Tree* cur) {
     tree_print_aux(cur, 0);
 }
 
+/* Post-order where traverse is free!! */
+void free_tree(Tree* cur) {
+    if (cur == NULL) return;
+    free_tree(cur->left);
+    free_tree(cur->right);
+    free(cur); /* Boom */
+}
 
 #endif

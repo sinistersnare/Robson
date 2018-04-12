@@ -69,36 +69,47 @@ Tree* tree_insert(Tree* root, int data) {
     return root;
 }
 
-
-Tree* tree_successor(Tree* node) {
-    Tree* cur;
-
-    /* fast path!*/
-    if (node->right_thread) return node->right;
-
-    /* else return leftmost child of right subtree!*/
-    cur = node->right;
-    while (!cur->left_thread) {
-        cur = cur->left;
-    }
-    return cur;
+int tree_size(Tree* cur) {
+    if (cur == NULL) return 0;
+    return 1 + tree_size(cur->left) + tree_size(cur->right);
 }
 
+int _tree_height_aux(Tree* cur, int level) {
+    int lh, rh;
+    if (t == NULL) return level;
+    lh = _tree_height_aux(t->left) + 1;
+    rh = _tree_height_aux(t->right) + 1;
+    return lh > rh ? lh : rh;
+}
+int tree_height(Tree* t) {
+    if (t == NULL) {
+        return 0;
+    }
+    _tree_height_aux(t, -1);
+}
 
-void tree_print_aux(Tree* cur, int indentation) {
+void _tree_print_aux(Tree* cur, int indentation) {
     if (cur == NULL) {
         return;
     }
     printf("%*c- %d\n", (indentation * 2), ' ', cur->data);
     if (!cur->left_thread) {
-        tree_print_aux(cur->left, indentation + 1);
+        _tree_print_aux(cur->left, indentation + 1);
     }
     if (!cur->right_thread) {
-        tree_print_aux(cur->right, indentation + 1);
+        _tree_print_aux(cur->right, indentation + 1);
     }
 }
 void tree_print(Tree* cur) {
-    tree_print_aux(cur, 0);
+    _tree_print_aux(cur, 0);
+}
+
+/* Post-order where traverse is free!! */
+void free_tree(Tree* cur) {
+    if (cur == NULL) return;
+    free_tree(cur->left);
+    free_tree(cur->right);
+    free(cur); /* Boom */
 }
 
 #endif
