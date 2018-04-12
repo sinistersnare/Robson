@@ -1,16 +1,16 @@
 CC=gcc
-CFLAGS=-std=c89 -pedantic -Wall -O3
+CFLAGS=-std=c89 -pedantic -Wall -Wextra -O3 -g
 
-all: inversion robson threaded
+all: link_inversion robson threaded tester
 
 clean:
-	rm -f link_inversion.x robson.x threaded.x
+	rm -f link_inversion.x robson.x threaded.x tests.x
 
-inversion:
-	$(CC) $(CFLAGS) link_inversion.c -o link_inversion.x
+link_inversion:
+	$(CC) $(CFLAGS) link_inversion_runner.c link_inversion.c -o link_inversion.x
 
 robson:
-	$(CC) $(CFLAGS) robson.c -o robson.x
+	$(CC) $(CFLAGS) robson_runner.c robson.c -o robson.x
 
 threaded:
-	$(CC) $(CFLAGS) threaded.c -o threaded.x
+	$(CC) $(CFLAGS) threaded_runner.c threaded.c -o threaded.x

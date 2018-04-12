@@ -3,20 +3,6 @@
 
 #include "link_inversion.h"
 
-void pre_visit(Tree* node) {
-    printf("pre:%d\n", node->data);
-}
-
-void in_visit(Tree* node) {
-    printf("in:%d\n", node->data);
-}
-
-void post_visit(Tree* node) {
-    printf("post:%d\n", node->data);
-}
-
-void no_visit(Tree* node) {}
-
 
 void link_inversion(Tree* cur, VisitFunc pre_order, VisitFunc in_order, VisitFunc post_order) {
     Tree* prev = NULL;
@@ -61,25 +47,46 @@ void link_inversion(Tree* cur, VisitFunc pre_order, VisitFunc in_order, VisitFun
     }
 }
 
-int main(int argc, const char** argv) {
-    Tree* t;
-    int i;
 
-    if (argc < 2) {
-        printf("Link Inversion takes more than 0 int arguments to add to tree in given order.");
-        return 1;
+
+/************************** Tree Implementation **************************/
+
+
+
+Tree* tree_insert(Tree* cur, int data) {
+    if (cur == NULL) {
+        Tree* new_node = (Tree*) malloc(sizeof(Tree));
+        new_node->data = data;
+        new_node->left = NULL;
+        new_node->right = NULL;
+        new_node->went_right = false;
+        return new_node;
     }
-
-    t = NULL;
-
-    for (i=1; i < argc; i++) {
-        t = tree_insert(t, atoi(argv[i]));
+    if (cur->data > data) {
+        cur->left = tree_insert(cur->left, data);
+    } else if (cur->data < data) {
+        cur->right = tree_insert(cur->right, data);
     }
-
-    /* tree_print(t);*/
-    link_inversion(t, pre_visit, in_visit, post_visit);
-    free_tree(t);
-    return 0;
+    return cur; /* Tree = Set, swallow duplicates.*/
 }
 
+void tree_print_aux(Tree* cur, int indentation) {
+    if (cur == NULL) {
+        printf("%*c- NULL\n", (indentation * 2), ' ');
+        return;
+    }
+    printf("%*c- %d\n", (indentation * 2), ' ', cur->data);
+    tree_print_aux(cur->left, indentation + 1);
+    tree_print_aux(cur->right, indentation + 1);
+}
+void tree_print(Tree* cur) {
+    tree_print_aux(cur, 0);
+}
 
+/* Post-order where traverse is free!! */
+void tree_free(Tree* cur) {
+    if (cur == NULL) return;
+    tree_free(cur->left);
+    tree_free(cur->right);
+    free(cur); /* Boom */
+}

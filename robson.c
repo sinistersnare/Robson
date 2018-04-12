@@ -3,6 +3,10 @@
 
 #include "robson.h"
 
+
+
+
+
 /* the memory address 1 will never be valid, so it makes a good sentinel.*/
 #define ROOT_PARENT_SENTINEL ((Tree*) 1)
 
@@ -134,32 +138,46 @@ void robson_traversal(Tree* cur, VisitFunc pre_visit, VisitFunc in_visit, VisitF
     }
 }
 
-void no_visit(Tree* _) {}
-void pre_visit(Tree* n) {
-    printf("pre:%d\n", n->data);
-}
-void in_visit(Tree* n) {
-    printf("in:%d\n", n->data);
-}
-void post_visit(Tree* n) {
-    printf("post:%d\n", n->data);
-}
 
-int main(int argc, const char** argv) {
-    Tree* t = NULL;
-    int i;
 
-    if (argc < 2) {
-        printf("Robson Traversal takes more than 0 int arguments to add to tree in given order.");
-        return 1;
+/************************** Tree Implementation **************************/
+
+
+Tree* tree_insert(Tree* cur, int data) {
+    if (cur == NULL) {
+        Tree* new_node = (Tree*) malloc(sizeof(Tree));
+        new_node->data = data;
+        new_node->left = NULL;
+        new_node->right = NULL;
+        return new_node;
     }
-
-    for (i=1; i < argc; i++) {
-        t = tree_insert(t, atoi(argv[i]));
+    if (cur->data > data) {
+        cur->left = tree_insert(cur->left, data);
+    } else if (cur->data < data) {
+        cur->right = tree_insert(cur->right, data);
     }
+    return cur; /* Tree = Set, swallow duplicates. */
+}
 
-    /*tree_print(t);*/
-    robson_traversal(t, pre_visit, in_visit, post_visit);
-    free_tree(t);
-    return 0;
+void _tree_print_aux(Tree* cur, int indentation) {
+    if (cur == NULL) {
+        printf("%*c- NULL\n", (indentation * 2), ' ');
+        return;
+    }
+    printf("%*c- %d\n", (indentation * 2), ' ', cur->data);
+    _tree_print_aux(cur->left, indentation + 1);
+    _tree_print_aux(cur->right, indentation + 1);
+}
+void tree_print(Tree* cur) {
+    _tree_print_aux(cur, 0);
+}
+
+
+/* Post-order where traverse is free!!
+    There may be some irony in me just using a standard DFS here... */
+void tree_free(Tree* cur) {
+    if (cur == NULL) return;
+    tree_free(cur->left);
+    tree_free(cur->right);
+    free(cur); /* Boom */
 }
