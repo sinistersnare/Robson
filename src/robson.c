@@ -3,11 +3,7 @@
 
 #include "robson.h"
 
-
-
-
-
-/* the memory address 1 will never be valid, so it makes a good sentinel.*/
+/* the memory address 1 will never be valid, so it makes a good sentinel. */
 #define ROOT_PARENT_SENTINEL ((Tree*) 1)
 
 /* Insightful comments are sporadically placed in anticipation of upcoming blog-post, sorry! */
@@ -34,7 +30,7 @@ void robson_traversal(Tree* cur, VisitFunc pre_visit, VisitFunc in_visit, VisitF
      /* Using a sentinel pointer value here instead of NULL
      because if the roots parent was NULL, on the way up the tree
      when the root is the parent, the parent->left == NULL,
-     and the algorithm would think that we are in a right branch.*/
+     and the algorithm would think that we are in a right branch. */
     Tree* parent = ROOT_PARENT_SENTINEL;
 
     for (;;) {
@@ -61,10 +57,10 @@ void robson_traversal(Tree* cur, VisitFunc pre_visit, VisitFunc in_visit, VisitF
         } else {
             bool exchanged = false;
             available = cur;
-            while (parent != ROOT_PARENT_SENTINEL) {
+            while (!exchanged && parent != ROOT_PARENT_SENTINEL) {
                 if (parent->right == NULL) {
                     /* We are ascending from the left here, but there is no right tree to exchange with.
-                        so just keep going on up.*/
+                        so just keep going on up. */
                     /* Here, parent->left is parent's parent, and parent->right == NULL */
                     Tree* new_parent = parent->left;
                     in_visit(cur);
@@ -74,8 +70,8 @@ void robson_traversal(Tree* cur, VisitFunc pre_visit, VisitFunc in_visit, VisitF
                     parent = new_parent;
                 } else if (parent->left == NULL) {
                     /* We are ascending from the right here, but only because there was no left
-                        child to traverse, so the leaf-stack is to be left unaltered.*/
-                    /* In this case, parent->left == NULL and parent->right is parent's parent.*/
+                        child to traverse, so the leaf-stack is to be left unaltered. */
+                    /* In this case, parent->left == NULL and parent->right is parent's parent. */
                     Tree* new_parent = parent->right;
                     post_visit(cur);
                     parent->right = cur;
@@ -89,7 +85,7 @@ void robson_traversal(Tree* cur, VisitFunc pre_visit, VisitFunc in_visit, VisitF
                         Remember that top->right is an exchange point,
                         and top->left is the next leaf in the stack. */
                     /* In this case, the parents left pointer points to its parent,
-                        and its right pointer points to its left child.*/
+                        and its right pointer points to its left child. */
                     Tree* new_parent = parent->left;
                     post_visit(cur);
                     parent->left = parent->right;
@@ -125,7 +121,6 @@ void robson_traversal(Tree* cur, VisitFunc pre_visit, VisitFunc in_visit, VisitF
                     cur = new_cur;
                     /* parent need not change!*/
                     exchanged = true;
-                    break; /* Get out of this loop so we can go down again.*/
                 }
             }
             /* If we make it here and we have not exchanged, there are no more suitable subtrees.
@@ -173,11 +168,8 @@ void tree_print(Tree* cur) {
 }
 
 
-/* Post-order where traverse is free!!
-    There may be some irony in me just using a standard DFS here... */
+void free_visit(Tree* cur) { printf("Freeing %d\n", cur->data); free(cur); }
+void none_visit(Tree* unused) {(void) unused;}
 void tree_free(Tree* cur) {
-    if (cur == NULL) return;
-    tree_free(cur->left);
-    tree_free(cur->right);
-    free(cur); /* Boom */
+    robson_traversal(cur, none_visit, none_visit, free_visit);
 }

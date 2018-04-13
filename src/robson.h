@@ -23,10 +23,4 @@ Tree* tree_insert(Tree*, int);
 void tree_print(Tree*);
 void tree_free(Tree*);
 
-
-void no_visit(Tree*);
-void pre_visit(Tree*);
-void in_visit(Tree*);
-void post_visit(Tree*);
-
 #endif
