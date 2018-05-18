@@ -33,7 +33,7 @@ int main(int argc, const char** argv) {
         t = tree_insert(t, atoi(argv[i]));
     }
 
-    /* tree_print(t);*/
+    /* tree_print(t); */
     link_inversion(t, pre_visit, in_visit, post_visit);
     tree_free(t);
     return 0;

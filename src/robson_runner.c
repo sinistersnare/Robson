@@ -27,8 +27,8 @@ int main(int argc, const char** argv) {
         t = tree_insert(t, atoi(argv[i]));
     }
 
-    /*tree_print(t);*/
-    robson_traversal(t, no_visit, in_visit, no_visit);
-    /*tree_free(t);*/
+    /* tree_print(t); */
+    robson_traversal(t, pre_visit, in_visit, post_visit);
+    /* tree_free(t); */
     return 0;
 }

@@ -6,9 +6,9 @@ so please feel free to hate my ugly, poorly commented/written code, but feel eve
 
 ## Running ##
 
-The Robson traversal only supports pre-order. In- and Post- order are possible, but not implemented.
+The Robson traversal supports pre-, in-, and pos- order traversals.
 
-The Link inversion traversal takes 3 visit functions and supports all 3, pre-, in-, and post-order.
+The link inversion traversal takes 3 visit functions and supports all 3, pre-, in-, and post-order.
 
 Threaded traversals only support in-order processing.
 
@@ -27,6 +27,7 @@ All of these files should correctly compile using a c89 compiler.
 
 * In- and post-order for robson traversal?
 * Blog post on Traversals. Then replace the next section with a link to that.
+* Use python + pexpect for testing!
 
 ## Why do I need the Robson traversal? ##
 

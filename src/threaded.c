@@ -42,7 +42,7 @@ Tree* tree_successor(Tree* node) {
 
 /** Shamelessly lifted from:
     https://www.geeksforgeeks.org/threaded-binary-tree-insertion/
-    because I didnt feel like hand-porting my Java OOPy version...
+    because I didnt feel like porting my Java OOPy version...
     Thanks G4G!!
 */
 Tree* tree_insert(Tree* root, int data) {
@@ -51,7 +51,7 @@ Tree* tree_insert(Tree* root, int data) {
     Tree* new_node;
     while (cur != NULL) {
         if (data == cur->data) {
-            /* duplicate, so just dont do anything.*/
+            /* duplicate, so just dont do anything. */
             return root;
         }
         parent = cur;

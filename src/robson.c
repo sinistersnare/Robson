@@ -8,7 +8,6 @@
 
 /* Insightful comments are sporadically placed in anticipation of upcoming blog-post, sorry! */
 
-/* TODO: break next_subtree into its own function. */
 /*
 // When going up, going up from right means we can keep going up,
 // The algorithm never goes from right to left, only left to right.
@@ -23,8 +22,9 @@
 // or when parent->left == NULL. Once we find the top->right condition,
 // We set top = top->left for the next time we are going up.
 */
+
 void robson_traversal(Tree* cur, VisitFunc pre_visit, VisitFunc in_visit, VisitFunc post_visit) {
-    /* Currently only pre_visit is supported, in_visit and post_visit coming soon <3*/
+    /* Currently only pre_visit is supported, in_visit and post_visit coming soon <3 */
     Tree* top = NULL;
     Tree* available = NULL;
      /* Using a sentinel pointer value here instead of NULL
@@ -33,7 +33,7 @@ void robson_traversal(Tree* cur, VisitFunc pre_visit, VisitFunc in_visit, VisitF
      and the algorithm would think that we are in a right branch. */
     Tree* parent = ROOT_PARENT_SENTINEL;
 
-    for (;;) {
+    while (1) {
         pre_visit(cur);
 
         /* Push down the tree until we find a leaf and use the information
@@ -41,30 +41,33 @@ void robson_traversal(Tree* cur, VisitFunc pre_visit, VisitFunc in_visit, VisitF
             after the leaf. Pushing down the tree means adding inverted pointers
             to the inner_stack so we can get back up the tree.
 
-            When we reach the leaf, we add it to the leaf_stack
-            */
+            When we reach the leaf, we mark it as available to the leaf stack. */
         if (cur->left != NULL) {
+            /* If there is a left to traverse, we must traverse it. */
             Tree* old_left = cur->left;
             cur->left = parent;
             parent = cur;
             cur = old_left;
         } else if (cur->right != NULL) {
+            /* If there is no left but a right to traverse, we must traverse it. */
             Tree* old_right = cur->right;
             in_visit(cur);
             cur->right = parent;
             parent = cur;
             cur = old_right;
         } else {
+            /* No children, at a leaf. */
             bool exchanged = false;
             available = cur;
+            in_visit(cur);
             while (!exchanged && parent != ROOT_PARENT_SENTINEL) {
+                post_visit(cur);
                 if (parent->right == NULL) {
                     /* We are ascending from the left here, but there is no right tree to exchange with.
                         so just keep going on up. */
                     /* Here, parent->left is parent's parent, and parent->right == NULL */
                     Tree* new_parent = parent->left;
-                    in_visit(cur);
-                    post_visit(cur);
+                    in_visit(parent);
                     parent->left = cur;
                     cur = parent;
                     parent = new_parent;
@@ -73,7 +76,6 @@ void robson_traversal(Tree* cur, VisitFunc pre_visit, VisitFunc in_visit, VisitF
                         child to traverse, so the leaf-stack is to be left unaltered. */
                     /* In this case, parent->left == NULL and parent->right is parent's parent. */
                     Tree* new_parent = parent->right;
-                    post_visit(cur);
                     parent->right = cur;
                     cur = parent;
                     parent = new_parent;
@@ -87,23 +89,19 @@ void robson_traversal(Tree* cur, VisitFunc pre_visit, VisitFunc in_visit, VisitF
                     /* In this case, the parents left pointer points to its parent,
                         and its right pointer points to its left child. */
                     Tree* new_parent = parent->left;
-                    post_visit(cur);
                     parent->left = parent->right;
                     parent->right = cur;
                     cur = parent;
                     parent = new_parent;
                     /* pop the leaf stack, the top's left pointer is the next leaf in the stack,
                         and there will always be one, but I dont feel like formally proving it.
-                        Exercise to the reader <3*/
+                        Exercise to the reader <3 */
                     top = top->left;
                 } else  {
                     Tree* new_cur;
-                    in_visit(cur);
-                    in_visit(parent);
-                    post_visit(cur);
                     /* After saving the most interesting case for last, here we are!
                         We are ascending from the left, and there is a right tree
-                        that we have not traversed!*/
+                        that we have not traversed! */
                     if (available == NULL) {
                         printf("Illegal state, available should never be NULL here!");
                         return;
@@ -119,12 +117,12 @@ void robson_traversal(Tree* cur, VisitFunc pre_visit, VisitFunc in_visit, VisitF
                         but its so we know which way we are going on the way back up */
                     parent->right = cur;
                     cur = new_cur;
-                    /* parent need not change!*/
+                    /* parent need not change! */
                     exchanged = true;
                 }
             }
             /* If we make it here and we have not exchanged, there are no more suitable subtrees.
-                we are at the root, and so we are done!*/
+                we are at the root, and so we are done! */
             if (!exchanged) {
                 post_visit(cur);
                 return;

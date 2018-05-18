@@ -22,7 +22,7 @@ typedef void (*VisitFunc)(Tree*);
 void link_inversion(Tree*, VisitFunc, VisitFunc, VisitFunc);
 
 
-/** Tree Related functions **/
+/************************** Tree Related Functions **************************/
 Tree* tree_insert(Tree*, int);
 void tree_print(Tree*);
 void tree_free(Tree*);
