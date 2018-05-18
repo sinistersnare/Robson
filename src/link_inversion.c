@@ -25,6 +25,7 @@ void link_inversion(Tree* cur, VisitFunc pre_order, VisitFunc in_order, VisitFun
 
         /* 2) ascend from right as much as we can. */
         while (prev != NULL && prev->went_right) {
+            prev->went_right = false; /* for future runs */
             old_prev = prev;
             prev = prev->right;
             old_prev->right = cur;
