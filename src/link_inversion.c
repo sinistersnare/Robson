@@ -12,8 +12,9 @@ void link_inversion(Tree* cur, VisitFunc pre_order, VisitFunc in_order, VisitFun
 
     if (cur == NULL) return;
 
-    for (;;) {
-        /* Descend leftward as much as possible. */
+    do {
+        /* 1)
+            Descend leftward as much as possible. */
         while (cur != NULL) {
             pre_order(cur);
             cur->went_right = false;
@@ -23,7 +24,8 @@ void link_inversion(Tree* cur, VisitFunc pre_order, VisitFunc in_order, VisitFun
             prev = old_cur;
         }
 
-        /* ascend from right as much as we can. */
+        /* 2)
+            ascend from right as much as we can. */
         while (prev != NULL && prev->went_right == true) {
             old_prev = prev;
             prev = prev->right;
@@ -32,19 +34,21 @@ void link_inversion(Tree* cur, VisitFunc pre_order, VisitFunc in_order, VisitFun
             post_order(cur);
         }
 
-        /* If cur is null after coming back up from the right,
-        // it means that we have finished traversal */
-        if (prev == NULL) return;
-
-        /* Switch from the left side of prev to the right
-        // Also, mark prev as went_right so we know to traverse upwards using right pointer. */
-        in_order(prev);
-        old_prev_left = prev->left;
-        prev->went_right = true;
-        prev->left = cur;
-        cur = prev->right;
-        prev->right = old_prev_left;
-    }
+        /* 3)
+            If cur is null after coming back up from the right,
+            it means that we have finished traversal,
+            so head back to the while-condition and get outta here! */
+        if (prev != NULL) {
+            /* Switch from the left side of prev to the right
+               Also, mark prev as went_right so we know to traverse upwards using right pointer. */
+            in_order(prev);
+            old_prev_left = prev->left;
+            prev->went_right = true;
+            prev->left = cur;
+            cur = prev->right;
+            prev->right = old_prev_left;
+        }
+    } while (prev != NULL);
 }
 
 
