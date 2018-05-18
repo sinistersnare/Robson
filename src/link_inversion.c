@@ -13,8 +13,7 @@ void link_inversion(Tree* cur, VisitFunc pre_order, VisitFunc in_order, VisitFun
     if (cur == NULL) return;
 
     do {
-        /* 1)
-            Descend leftward as much as possible. */
+        /* 1) Descend leftward as much as possible. */
         while (cur != NULL) {
             pre_order(cur);
             cur->went_right = false;
@@ -24,9 +23,8 @@ void link_inversion(Tree* cur, VisitFunc pre_order, VisitFunc in_order, VisitFun
             prev = old_cur;
         }
 
-        /* 2)
-            ascend from right as much as we can. */
-        while (prev != NULL && prev->went_right == true) {
+        /* 2) ascend from right as much as we can. */
+        while (prev != NULL && prev->went_right) {
             old_prev = prev;
             prev = prev->right;
             old_prev->right = cur;
@@ -35,9 +33,10 @@ void link_inversion(Tree* cur, VisitFunc pre_order, VisitFunc in_order, VisitFun
         }
 
         /* 3)
-            If cur is null after coming back up from the right,
-            it means that we have finished traversal,
-            so head back to the while-condition and get outta here! */
+            If prev is null after coming back up from the right,
+                it means that we have finished traversal,
+                so head back to the while-condition and get outta here!
+            Else, we will do an exchange here, swap to right child of parent. */
         if (prev != NULL) {
             /* Switch from the left side of prev to the right
                Also, mark prev as went_right so we know to traverse upwards using right pointer. */
