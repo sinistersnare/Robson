@@ -87,10 +87,9 @@ void tree_print(Tree* cur) {
     tree_print_aux(cur, 0);
 }
 
-/* Post-order where traverse is free!! */
+void none_visit(Tree* unused) {(void) unused;}
+void free_visit(Tree* cur) { free(cur); }
 void tree_free(Tree* cur) {
-    if (cur == NULL) return;
-    tree_free(cur->left);
-    tree_free(cur->right);
-    free(cur); /* Boom */
+    /* Nice. */
+    link_inversion(cur, none_visit, none_visit, free_visit);
 }

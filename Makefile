@@ -1,16 +1,19 @@
 CC=gcc
 CFLAGS=-std=c89 -pedantic -Wall -Wextra -g
 
-all: link_inversion robson threaded
+all: bin/link_inversion.x bin/robson.x bin/threaded.x
 
 clean:
-	rm -f link_inversion.x robson.x threaded.x
+	rm -f bin/robson.x bin/link_inversion.x bin/threaded.x
 
-link_inversion:
-	$(CC) $(CFLAGS) src/link_inversion_runner.c src/link_inversion.c -o link_inversion.x
+bin/link_inversion.x:
+	mkdir -p bin
+	$(CC) $(CFLAGS) src/link_inversion_runner.c src/link_inversion.c -o bin/link_inversion.x
 
-robson:
-	$(CC) $(CFLAGS) src/robson_runner.c src/robson.c -o robson.x
+bin/robson.x:
+	mkdir -p bin
+	$(CC) $(CFLAGS) src/robson_runner.c src/robson.c -o bin/robson.x
 
-threaded:
-	$(CC) $(CFLAGS) src/threaded_runner.c src/threaded.c -o threaded.x
+bin/threaded.x:
+	mkdir -p bin
+	$(CC) $(CFLAGS) src/threaded_runner.c src/threaded.c -o bin/threaded.x

@@ -21,7 +21,6 @@ int main(int argc, const char** argv) {
         t = tree_insert(t, atoi(argv[i]));
     }
 
-    tree_print(t);
     threaded_traversal(t, visit);
     tree_free(t);
     return 0;

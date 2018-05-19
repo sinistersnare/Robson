@@ -24,7 +24,6 @@
 */
 
 void robson_traversal(Tree* cur, VisitFunc pre_visit, VisitFunc in_visit, VisitFunc post_visit) {
-    /* Currently only pre_visit is supported, in_visit and post_visit coming soon <3 */
     Tree* top = NULL;
     Tree* available = NULL;
      /* Using a sentinel pointer value here instead of NULL
@@ -32,6 +31,8 @@ void robson_traversal(Tree* cur, VisitFunc pre_visit, VisitFunc in_visit, VisitF
      when the root is the parent, the parent->left == NULL,
      and the algorithm would think that we are in a right branch. */
     Tree* parent = ROOT_PARENT_SENTINEL;
+
+    if (cur == NULL) return;
 
     while (1) {
         pre_visit(cur);
@@ -166,8 +167,9 @@ void tree_print(Tree* cur) {
 }
 
 
-void free_visit(Tree* cur) { printf("Freeing %d\n", cur->data); free(cur); }
 void none_visit(Tree* unused) {(void) unused;}
+void free_visit(Tree* cur) { free(cur); }
 void tree_free(Tree* cur) {
+    /* Hey, look! Using robson! */
     robson_traversal(cur, none_visit, none_visit, free_visit);
 }
