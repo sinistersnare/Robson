@@ -3,9 +3,6 @@
 
 #include "robson.h"
 
-/* the memory address 1 will never be valid, so it makes a good sentinel. */
-#define ROOT_PARENT_SENTINEL ((Tree*) 1)
-
 /* Insightful comments are sporadically placed in anticipation of upcoming blog-post, sorry! */
 
 /*
@@ -30,7 +27,7 @@ void robson_traversal(Tree* cur, VisitFunc pre_visit, VisitFunc in_visit, VisitF
      because if the roots parent was NULL, on the way up the tree
      when the root is the parent, the parent->left == NULL,
      and the algorithm would think that we are in a right branch. */
-    Tree* parent = ROOT_PARENT_SENTINEL;
+    Tree* parent = NULL;
 
     if (cur == NULL) return;
 
@@ -41,7 +38,6 @@ void robson_traversal(Tree* cur, VisitFunc pre_visit, VisitFunc in_visit, VisitF
             we gained on the way down to find the next subtree to traverse
             after the leaf. Pushing down the tree means adding inverted pointers
             to the inner_stack so we can get back up the tree.
-
             When we reach the leaf, we mark it as available to the leaf stack. */
         if (cur->left != NULL) {
             /* If there is a left to traverse, we must traverse it. */
@@ -61,7 +57,7 @@ void robson_traversal(Tree* cur, VisitFunc pre_visit, VisitFunc in_visit, VisitF
             bool exchanged = false;
             available = cur;
             in_visit(cur);
-            while (!exchanged && parent != ROOT_PARENT_SENTINEL) {
+            while (!exchanged && parent != NULL) {
                 post_visit(cur);
                 if (parent->right == NULL) {
                     /* We are ascending from the left here, but there is no right tree to exchange with.
