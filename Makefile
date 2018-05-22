@@ -17,3 +17,6 @@ bin/robson.x:
 bin/threaded.x:
 	mkdir -p bin
 	$(CC) $(CFLAGS) src/threaded_runner.c src/threaded.c -o bin/threaded.x
+
+test: clean all
+	python3 tests/tests.py

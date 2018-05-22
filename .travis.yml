@@ -1,6 +1,10 @@
 language:
-  python
-python:
-  - "3.6"
+  c
 script:
-  python3 tests/tests.py
+  make test
+before_install:
+  - sudo apt-get update
+  - sudo apt-get install python3
+notifications:
+  email:
+    - sinistersnare@gmail.com
