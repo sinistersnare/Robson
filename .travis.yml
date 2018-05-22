@@ -5,6 +5,20 @@ script:
 before_install:
   - sudo apt-get update
   - sudo apt-get install python3
+matrix:
+  include:
+    - os: linux
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-7
+      env:
+        - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
+
+
+
 notifications:
   email:
     - sinistersnare@gmail.com
