@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <limits.h>
+#include <assert.h>
 
 #include "robson.h"
 
@@ -62,7 +64,7 @@ void robson_traversal(Tree* cur, VisitFunc pre_visit, VisitFunc in_visit, VisitF
             available = cur;
             in_visit(cur);
             while (!exchanged && parent != ROOT_PARENT_SENTINEL) {
-                post_visit(cur);
+                Tree* old_cur = cur;
                 if (parent->right == NULL) {
                     /* We are ascending from the left here, but there is no right tree to exchange with.
                         so just keep going on up. */
@@ -89,6 +91,7 @@ void robson_traversal(Tree* cur, VisitFunc pre_visit, VisitFunc in_visit, VisitF
                         and top->left is the next leaf in the stack. */
                     /* In this case, the parents left pointer points to its parent,
                         and its right pointer points to its left child. */
+                    Tree* old_top = top;
                     Tree* new_parent = parent->left;
                     parent->left = parent->right;
                     parent->right = cur;
@@ -98,15 +101,14 @@ void robson_traversal(Tree* cur, VisitFunc pre_visit, VisitFunc in_visit, VisitF
                         and there will always be one, but I dont feel like formally proving it.
                         Exercise to the reader <3 */
                     top = top->left;
+                    old_top->left = NULL;
+                    old_top->right = NULL;
                 } else  {
-                    Tree* new_cur;
                     /* After saving the most interesting case for last, here we are!
                         We are ascending from the left, and there is a right tree
                         that we have not traversed! */
-                    if (available == NULL) {
-                        printf("Illegal state, available should never be NULL here!");
-                        return;
-                    }
+                    Tree* new_cur;
+                    assert(available != NULL);
                     /* Available becomes the new top of the leaf stack,
                         and parent is the exchange point. */
                     new_cur = parent->right;
@@ -121,6 +123,7 @@ void robson_traversal(Tree* cur, VisitFunc pre_visit, VisitFunc in_visit, VisitF
                     /* parent need not change! */
                     exchanged = true;
                 }
+                post_visit(old_cur);
             }
             /* If we make it here and we have not exchanged, there are no more suitable subtrees.
                 we are at the root, and so we are done! */
@@ -153,23 +156,31 @@ Tree* tree_insert(Tree* cur, int data) {
     return cur; /* Tree = Set, swallow duplicates. */
 }
 
-void _tree_print_aux(Tree* cur, int indentation) {
+void _tree_print_aux(Tree* cur, int indentation, int max_depth) {
+    if (indentation >= max_depth) {
+        return;
+    }
     if (cur == NULL) {
         printf("%*c- NULL\n", (indentation * 2), ' ');
         return;
     }
     printf("%*c- %d\n", (indentation * 2), ' ', cur->data);
-    _tree_print_aux(cur->left, indentation + 1);
-    _tree_print_aux(cur->right, indentation + 1);
+    _tree_print_aux(cur->left, indentation + 1, max_depth);
+    _tree_print_aux(cur->right, indentation + 1, max_depth);
 }
 void tree_print(Tree* cur) {
-    _tree_print_aux(cur, 0);
+    _tree_print_aux(cur, 0, INT_MAX);
 }
 
+void tree_print_depth(Tree* cur, int max_depth) {
+    _tree_print_aux(cur, 0, max_depth);
+}
 
 void none_visit(Tree* unused) {(void) unused;}
 void free_visit(Tree* cur) { free(cur); }
 void tree_free(Tree* cur) {
-    /* Hey, look! Using robson! */
-    robson_traversal(cur, none_visit, none_visit, free_visit);
+    if (cur == NULL) return;
+    tree_free(cur->left);
+    tree_free(cur->right);
+    free(cur);
 }

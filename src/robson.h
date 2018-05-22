@@ -21,6 +21,7 @@ void robson_traversal(Tree*, VisitFunc, VisitFunc, VisitFunc);
 
 Tree* tree_insert(Tree*, int);
 void tree_print(Tree*);
+void tree_print_depth(Tree*, int);
 void tree_free(Tree*);
 
 #endif
