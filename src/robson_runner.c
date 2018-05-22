@@ -50,6 +50,7 @@ int main(int argc, char** argv) {
         t = tree_insert(t, atoi(argv[i]));
     }
 
+    /*tree_print(t);*/
     robson_traversal(t, pre_func, in_func, post_func);
     fflush(stdout);
     tree_free(t);

@@ -30,6 +30,7 @@ int main(int argc, char** argv) {
     /* Takes pRe, iN, or pOst order.
         I used the second character because post and pre both start with same character,
         and this seemed like the best comprompise, nobody wins! */
+    /* Negative numbers not allowed with CLI interface! Sorry, i dont want to parse your shit */
     while ((c = getopt(argc, argv, "rno")) != -1) {
         switch (c) {
         case 'r': /* Pre-order enabled */
