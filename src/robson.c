@@ -108,6 +108,7 @@ void robson_traversal(Tree* cur, VisitFunc pre_visit, VisitFunc in_visit, VisitF
                         We are ascending from the left, and there is a right tree
                         that we have not traversed! */
                     Tree* new_cur;
+                    in_visit(parent);
                     assert(available != NULL);
                     /* Available becomes the new top of the leaf stack,
                         and parent is the exchange point. */
