@@ -3,7 +3,7 @@
 
 import unittest
 import random
-from subprocess import check_output, run
+from subprocess import check_output, Popen, PIPE
 
 class Tree:
     """Simple binary tree"""
@@ -22,25 +22,37 @@ def tree_insert(cur, data):
     return cur
 
 def pre_order(cur):
-    if cur is None:
-        return
-    yield cur.data
-    pre_order(cur.left)
-    pre_order(cur.right)
+    def inner(cur, lst):
+        if cur is None:
+            return
+        lst.append(cur.data)
+        inner(cur.left, lst)
+        inner(cur.right, lst)
+    ordered = []
+    inner(cur, ordered)
+    return ordered
 
 def in_order(cur):
-    if cur is None:
-        return
-    in_order(cur.left)
-    yield cur.data
-    in_order(cur.right)
+    def inner(cur, lst):
+        if cur is None:
+            return
+        inner(cur.left, lst)
+        lst.append(cur.data)
+        inner(cur.right, lst)
+    ordered = []
+    inner(cur, ordered)
+    return ordered
 
 def post_order(cur):
-    if cur is None:
-        return
-    post_order(cur.left)
-    post_order(cur.right)
-    yield cur.data
+    def inner(cur, lst):
+        if cur is None:
+            return
+        inner(cur.left, lst)
+        inner(cur.right, lst)
+        lst.append(cur.data)
+    ordered = []
+    inner(cur, ordered)
+    return ordered
 
 
 def sort_orders(output):
@@ -49,38 +61,38 @@ def sort_orders(output):
     posts = []
     for line in output.split('\n'):
         if line.startswith("post:"):
-            posts.append(line.split(':')[1])
+            posts.append(int(line.split(':')[1]))
         elif line.startswith("pre:"):
-            pres.append(line.split(':')[1])
+            pres.append(int(line.split(':')[1]))
         elif line.startswith("in:"):
-            ins.append(line.split(':')[1])
+            ins.append(int(line.split(':')[1]))
         else:
+            print("BAD INPUT IN sort_orders!!!")
             return (False, False, False)
     return (pres, ins, posts)
 
 
 class TestPythonTree(unittest.TestCase):
-    def test_preorder(self):
-        self.assertEqual(True, True)
+    pass # TODO
 
 class TestRobson(unittest.TestCase):
-    def test_preorder_random(self):
-        tree_values = [random.randint(0, 1000) for i in range(5)]
-        print("Values: {}".format(tree_values))
+    def test_traversal_random(self):
+        tree_values = [random.randint(0, 100000) for i in range(5000)]
         pytree = None
         for val in tree_values:
             pytree = tree_insert(pytree, val)
-        py_pre = list(pre_order(pytree))
-        py_in = list(in_order(pytree))
-        py_post = list(post_order(pytree))
+        py_pre = pre_order(pytree)
+        py_in = in_order(pytree)
+        py_post = post_order(pytree)
 
-        command = ['bin/robson.x', '-rno', ]
+        command = ['bin/robson.x', '-rno']
         command.extend(map(str, tree_values))
-        stdout = check_output(command).decode('utf-8')
+        stdout = check_output(command).decode('utf-8').strip()
         pre_values, in_values, post_values = sort_orders(stdout)
         self.assertEqual(py_pre, pre_values)
         self.assertEqual(py_in, in_values)
         self.assertEqual(py_post, post_values)
+
 
 """
 1) generate list of random numbers.
@@ -91,4 +103,7 @@ class TestRobson(unittest.TestCase):
 """
 
 if __name__ == '__main__':
+    cmd = ["make", "clean", "&&", "make", "all"]
+    p = Popen(cmd, shell=True, stdout=PIPE, stderr=PIPE)
+    out, err = p.communicate() # swallow output! TODO: maybe check to make sure it worked?
     unittest.main()
