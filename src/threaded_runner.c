@@ -3,7 +3,6 @@
 
 #include "threaded.h"
 
-
 void visit(Tree* node) {
     printf("%d\n", node->data);
 }

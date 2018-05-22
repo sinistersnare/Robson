@@ -18,7 +18,6 @@ void post_visit(Tree* node) {
 
 void no_visit(Tree* unused) { (void) unused;}
 
-
 int main(int argc, char** argv) {
     Tree* t = NULL;
     int i;
@@ -49,10 +48,10 @@ int main(int argc, char** argv) {
             printf("hmm, how'd I get here? %c\n", c);
         }
     }
+
     for (i = optind; i < argc; i++) {
         t = tree_insert(t, atoi(argv[i]));
     }
-
 
     link_inversion(t, pre_func, in_func, post_func);
     tree_free(t);

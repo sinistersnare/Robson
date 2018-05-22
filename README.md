@@ -26,11 +26,11 @@ All of these files should correctly compile using a c89 compiler.
 ## TODO: ##
 
 * Blog post on Traversals. Then replace the next section with a link to that.
-* Use python + pexpect for testing!
+* Testing!
 
 ## Why do I need the Robson traversal? ##
 
-A Robson traversal is a binary tree traversal in `O(n)` time, and ***`O(1)`*** (!!!!) space.
+A Robson traversal is a binary tree traversal in `O(n)` time, and ***`O(1)`*** (!!!) space.
 
 The basic depth-first search traversal algorithm is `O(n)` space, and the threaded and link-inversion methods both are also `O(n)` space complexity.
 

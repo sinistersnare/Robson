@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-std=c89 -pedantic -Wall -Wextra -g
+CFLAGS=-std=c89 -pedantic -Wall -Wextra
 
 all: bin/link_inversion.x bin/robson.x bin/threaded.x
 
