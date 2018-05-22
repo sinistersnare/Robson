@@ -1,4 +1,4 @@
-CFLAGS=-std=c89 -pedantic -Wall -Wextra
+CFLAGS=-pedantic -Wall -Wextra
 
 all: bin/link_inversion.x bin/robson.x bin/threaded.x
 

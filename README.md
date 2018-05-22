@@ -21,8 +21,6 @@ Threaded traversals only support in-order processing.
     $ ./link_inversion.x 1 2 5 4 7 3 8 10 0 11
     $ make clean # when you are done.
 
-All of these files should correctly compile using a c89 compiler.
-
 ## TODO: ##
 
 * Blog post on Traversals. Then replace the next section with a link to that.
