@@ -14,17 +14,19 @@ Threaded traversals only support in-order processing.
 
     $ make all # instead of using all the other make commands
     $ make robson
-    $ ./robson.x 1 2 5 4 7 3 8 10 0 11
+    $ ./robson.x -rno 1 2 5 4 7 3 8 10 0 11
     $ make threaded
-    $ ./threaded.x 1 2 5 4 7 3 8 10 0 11
+    $ ./threaded.x -rno 1 2 5 4 7 3 8 10 0 11
     $ make inversion
-    $ ./link_inversion.x 1 2 5 4 7 3 8 10 0 11
+    $ ./link_inversion.x -rno 1 2 5 4 7 3 8 10 0 11
     $ make clean # when you are done.
 
 ## TODO: ##
 
 * Blog post on Traversals. Then replace the next section with a link to that.
 * Testing!
+    * Need tests using specific trees, not just random, to make sure certain cases are checked.
+* Warning when no options are given for runner-programs
 
 ## Why do I need the Robson traversal? ##
 

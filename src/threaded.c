@@ -127,7 +127,11 @@ void tree_print(Tree* cur) {
 /* Post-order where traverse is free!! */
 void tree_free(Tree* cur) {
     if (cur == NULL) return;
-    tree_free(cur->left);
-    tree_free(cur->right);
-    free(cur); /* Boom */
+    if (!cur->left_thread) {
+        tree_free(cur->left);
+    }
+    if (!cur->right_thread) {
+        tree_free(cur->right);
+    }
+    free(cur);
 }

@@ -1,9 +1,9 @@
-CFLAGS=-pedantic -Wall -Wextra
+CFLAGS=-pedantic -Wall -Wextra -g
 
 all: bin/link_inversion.x bin/robson.x bin/threaded.x
 
 clean:
-	rm -f bin/robson.x bin/link_inversion.x bin/threaded.x
+	rm -rf bin
 
 bin/link_inversion.x:
 	mkdir -p bin
@@ -18,4 +18,4 @@ bin/threaded.x:
 	${CC} $(CFLAGS) src/threaded_runner.c src/threaded.c -o bin/threaded.x
 
 test: clean all
-	python3 tests/tests.py
+	python3 tests/test.py

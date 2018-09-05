@@ -12,7 +12,7 @@ int main(int argc, const char** argv) {
     int i;
 
     if (argc < 2) {
-        printf("Threaded Traverasl takes more than 0 int arguments to add to tree in given order.");
+        printf("Threaded Traverasl takes more than 0 int arguments to add to tree in given order.\n");
         return 1;
     }
 
