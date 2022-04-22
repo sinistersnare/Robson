@@ -44,8 +44,8 @@ algorithm in `robson.c` is annotated enough to give an idea of its core process.
 I am currently writing a blog post about Robson and the other traversals in this repository,
 so please stay tuned on https://drs.is for that!
 
-I have the original paper by JM Robson (algorithm written in ALGOL 68-R!!),
-but I probably cant share it publicly. Ask me if you want a copy!
+I included the paper by JM Robson here (algorithm written in ALGOL 68-R!!).
+It is relatively hard to get a copy of it, so I decided its worth it to include.
 
 Here are some of the resources I found helpful when studying the Robson Traversal:
 
